@@ -6,7 +6,6 @@ const responseJsonModify: Handler = (req, res, next): void => {
     const returnBody = {
       status: res.statusCode,
       data: body,
-      message: res.statusMessage ?? "OK",
     };
     json_.call(res, returnBody);
   };
