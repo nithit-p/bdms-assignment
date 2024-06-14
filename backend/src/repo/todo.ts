@@ -1,13 +1,11 @@
-import { Todo } from "../models/todo";
-
-type TodoInput = Omit<Todo, "id">;
+import { Todo, TodoCreate } from "../models/todo";
 
 export class TodoRepository {
   private list: Todo[] = [];
   constructor() {
     this.list = [];
   }
-  create(todo: TodoInput): Todo {
+  create(todo: TodoCreate): Todo {
     const newTodo = { ...todo, id: String(this.list.length + 1) };
     this.list.push(newTodo);
     return newTodo;

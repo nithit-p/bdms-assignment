@@ -1,13 +1,17 @@
 // create express group router
 
 import express, { Request, Response } from "express";
-import { Todo } from "../models/todo";
+import { Todo, TodoCreate } from "../models/todo";
 import { TodoRepository } from "../repo/todo";
+import Joi from "joi";
 
 const router = express.Router();
 const todoRepository = new TodoRepository();
 
-type TodoRequest = Omit<Todo, "id">;
+const todoRequestValidation = Joi.object({
+  title: Joi.string().required(),
+  description: Joi.string(),
+});
 
 // get all todos
 router.get("/", async (req: Request<Todo>, res: Response<Todo[]>) => {
@@ -22,15 +26,30 @@ router.get("/:id", async (req: Request, res: Response) => {
 });
 
 // create todo
-router.post("/", async (req: Request<TodoRequest>, res: Response) => {
-  const todo = req.body;
+
+router.post("/", async (req: Request, res: Response) => {
+  const { error } = todoRequestValidation.validate(req.body);
+  if (error) {
+    res.status(400).json({ message: error.message });
+    return;
+  }
+  const todo: TodoCreate = {
+    title: req.body.title,
+    description: req.body.description,
+  };
   const result = todoRepository.create(todo);
   res.json(result);
 });
 
 // update todo
 
-router.put("/:id", async (req: Request, res: Response) => {
+router.put("/:id", async (req: Request<{ id: string }>, res: Response) => {
+  const { error } = todoRequestValidation.validate(req.body);
+  if (error) {
+    res.status(400).json({ message: error.message });
+    return;
+  }
+
   const todo = todoRepository.getById(req.params.id);
   if (!todo) {
     res.status(404).json({ message: "Todo not found" });

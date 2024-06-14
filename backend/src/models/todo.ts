@@ -4,4 +4,6 @@ interface Todo {
   description: string;
 }
 
-export { Todo };
+type TodoCreate = Omit<Todo, "id">;
+
+export { Todo, TodoCreate };
