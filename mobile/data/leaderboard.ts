@@ -15,4 +15,5 @@ export function getLeaderboard(otp?: {
 
 export function addLeaderboard(leaderboard: Leaderboard): void {
   leaderboards.push(leaderboard);
+  leaderboards.sort((a, b) => b.score - a.score);
 }

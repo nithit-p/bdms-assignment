@@ -1,7 +1,7 @@
 import { StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { Answer, getRamdomQuestionList, getScore } from '@/data/question';
 import { Question } from '@/models/question';
 import { router, useFocusEffect, useLocalSearchParams } from 'expo-router';
@@ -16,17 +16,22 @@ export default function QuestionScreen() {
   const [answers, setAnswers] = useState<Answer[]>([]);
 
   const handleNextQuestion = () => {
+
+    if (!selectedValue) return
     if (counter < questions.length - 1) {
-      if (!selectedValue) return
       setAnswers([...answers, {
         questionId: questions[counter].id,
         answerValue: selectedValue
       }])
-      setCounter(counter + 1)
       setSelectedValue(undefined)
+      setCounter(counter + 1)
       return
     }
-    const score = getScore(answers)
+
+    const score = getScore([...answers, {
+      questionId: questions[counter].id,
+      answerValue: selectedValue
+    }])
     if (userName) {
       addLeaderboard({
         userName: userName.toString(),
@@ -123,41 +128,7 @@ export default function QuestionScreen() {
   );
 }
 
-// const styles = StyleSheet.create({
-//   titleContainer: {
-//     flexDirection: 'row',
-//     alignItems: 'center',
-//     gap: 8,
-//   },
-//   stepContainer: {
-//     gap: 8,
-//     marginBottom: 8,
-//   },
-//   reactLogo: {
-//     height: 178,
-//     width: 290,
-//     bottom: 0,
-//     left: 0,
-//     position: 'absolute',
-//   },
-// });
-
-
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  title: {
-    fontSize: 18,
-    marginBottom: 20,
-  },
-  radioButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 10,
-  },
   outerCircle: {
     height: 20,
     width: 20,
@@ -172,13 +143,5 @@ const styles = StyleSheet.create({
     width: 10,
     borderRadius: 5,
     backgroundColor: '#000',
-  },
-  radioText: {
-    marginLeft: 10,
-    fontSize: 16,
-  },
-  selectedValueText: {
-    marginTop: 20,
-    fontSize: 16,
   },
 });

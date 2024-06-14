@@ -9,7 +9,6 @@ import { Leaderboard } from '@/models/leaderboard';
 import { getLeaderboard } from '@/data/leaderboard';
 
 export default function LeaderBoardScreen() {
-  const { userName } = useLocalSearchParams()
   const [leaderboards, setLeaderboards] = useState<Leaderboard[]>([])
 
   useFocusEffect(
@@ -18,8 +17,6 @@ export default function LeaderBoardScreen() {
       setLeaderboards(leaderboards)
     }, [])
   )
-
-  console.log(leaderboards)
 
   return (
     <ThemedView style={{
@@ -33,9 +30,9 @@ export default function LeaderBoardScreen() {
           <ThemedView style={styles.titleContainer}>
             <ThemedText type="title">LeaderBoard</ThemedText>
           </ThemedView>
-          <ThemedView style={styles.titleContainer}>
+          {/* <ThemedView style={styles.titleContainer}>
             <ThemedText type="subtitle">Top 10</ThemedText>
-          </ThemedView>
+          </ThemedView> */}
           <ThemedView style={styles.leaderBoardTable}>
             <ThemedView style={styles.tableHeader}>
               <ThemedText type="defaultSemiBold" style={styles.tableColumn}>User Name</ThemedText>

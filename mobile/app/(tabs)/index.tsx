@@ -1,4 +1,4 @@
-import { Image, StyleSheet, Platform, TextInput, TouchableOpacity } from 'react-native';
+import { Image, StyleSheet, TextInput, TouchableOpacity } from 'react-native';
 
 import ParallaxScrollView from '@/components/ParallaxScrollView';
 import { ThemedText } from '@/components/ThemedText';
@@ -15,7 +15,6 @@ export default function HomeScreen() {
       setError('Please enter your name');
       return;
     }
-    console.log('handleQuestions');
     router.push({
       pathname: `/questions`,
       params: {
@@ -30,8 +29,6 @@ export default function HomeScreen() {
       setError('');
     }, [])
   );
-
-
 
   return (
     <ParallaxScrollView
