@@ -1,0 +1,155 @@
+import { StyleSheet, TouchableOpacity } from 'react-native';
+import { ThemedText } from '@/components/ThemedText';
+import { ThemedView } from '@/components/ThemedView';
+
+import { router, useLocalSearchParams } from 'expo-router';
+
+
+export default function SummaryScreen() {
+  const { userName, score } = useLocalSearchParams()
+
+  const handleLeaderBoard = () => {
+    router.navigate({
+      pathname: `/leaderboard`, params: {
+        userName: userName,
+      }
+    })
+  }
+
+  const handleGoBack = () => {
+    router.navigate("/")
+  }
+
+  return (
+    <ThemedView style={{
+      flex: 1,
+    }} >
+
+      <ThemedView style={{
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop: 200,
+        minHeight: 200,
+      }}>
+        <ThemedText
+          type='subtitle'
+        >
+          {`user : `}
+          <ThemedText
+            type='title'
+          >{userName}</ThemedText>
+        </ThemedText>
+        <ThemedText
+          type='subtitle'
+        >
+          {`score : `}
+          <ThemedText
+            type='title'
+          >{score}</ThemedText>
+        </ThemedText>
+
+
+      </ThemedView>
+
+      <ThemedView style={{
+
+        paddingHorizontal: 10,
+      }}>
+        <TouchableOpacity
+          style={{
+            backgroundColor: '#3B82F6',
+            padding: 10,
+            borderRadius: 10,
+            marginBottom: 20,
+          }}
+          onPress={handleLeaderBoard}
+        >
+          <ThemedText style={{
+            fontSize: 18,
+            textAlign: 'center',
+            color: '#fff',
+          }}>Leaderboard</ThemedText>
+        </TouchableOpacity>
+      </ThemedView>
+      <ThemedView style={{
+
+        paddingHorizontal: 10,
+      }}>
+        <TouchableOpacity
+          style={{
+            backgroundColor: '#3B82F6',
+            padding: 10,
+            borderRadius: 10,
+          }}
+          onPress={handleGoBack}
+        >
+          <ThemedText style={{
+            fontSize: 18,
+            textAlign: 'center',
+            color: '#fff',
+          }}>Go back</ThemedText>
+        </TouchableOpacity>
+      </ThemedView>
+    </ThemedView >
+  );
+}
+
+// const styles = StyleSheet.create({
+//   titleContainer: {
+//     flexDirection: 'row',
+//     alignItems: 'center',
+//     gap: 8,
+//   },
+//   stepContainer: {
+//     gap: 8,
+//     marginBottom: 8,
+//   },
+//   reactLogo: {
+//     height: 178,
+//     width: 290,
+//     bottom: 0,
+//     left: 0,
+//     position: 'absolute',
+//   },
+// });
+
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  title: {
+    fontSize: 18,
+    marginBottom: 20,
+  },
+  radioButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 10,
+  },
+  outerCircle: {
+    height: 20,
+    width: 20,
+    borderRadius: 10,
+    borderWidth: 2,
+    borderColor: '#000',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  innerCircle: {
+    height: 10,
+    width: 10,
+    borderRadius: 5,
+    backgroundColor: '#000',
+  },
+  radioText: {
+    marginLeft: 10,
+    fontSize: 16,
+  },
+  selectedValueText: {
+    marginTop: 20,
+    fontSize: 16,
+  },
+});

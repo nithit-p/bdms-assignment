@@ -1,11 +1,38 @@
-import { Image, StyleSheet, Platform } from 'react-native';
+import { Image, StyleSheet, Platform, TextInput, TouchableOpacity } from 'react-native';
 
-import { HelloWave } from '@/components/HelloWave';
 import ParallaxScrollView from '@/components/ParallaxScrollView';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
+import { router, useFocusEffect } from 'expo-router';
+import { useCallback, useState } from 'react';
 
 export default function HomeScreen() {
+  const [userName, setUserName] = useState<string>('');
+  const [error, setError] = useState<string>('');
+
+  const handleQuestions = () => {
+    if (!userName) {
+      setError('Please enter your name');
+      return;
+    }
+    console.log('handleQuestions');
+    router.push({
+      pathname: `/questions`,
+      params: {
+        userName: userName,
+      }
+    });
+  }
+
+  useFocusEffect(
+    useCallback(() => {
+      setUserName('');
+      setError('');
+    }, [])
+  );
+
+
+
   return (
     <ParallaxScrollView
       headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
@@ -15,36 +42,62 @@ export default function HomeScreen() {
           style={styles.reactLogo}
         />
       }>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Welcome!</ThemedText>
-        <HelloWave />
+      <ThemedView style={{
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop: 20,
+      }}>
+        <ThemedText type="title">20 Question</ThemedText>
       </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 1: Try it</ThemedText>
-        <ThemedText>
-          Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes.
-          Press{' '}
-          <ThemedText type="defaultSemiBold">
-            {Platform.select({ ios: 'cmd + d', android: 'cmd + m' })}
-          </ThemedText>{' '}
-          to open developer tools.
-        </ThemedText>
+      <ThemedView style={
+        {
+          justifyContent: 'center',
+          alignItems: 'center',
+          marginTop: 20,
+        }
+      }>
+        <ThemedText type="subtitle">Enter your name</ThemedText>
       </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 2: Explore</ThemedText>
-        <ThemedText>
-          Tap the Explore tab to learn more about what's included in this starter app.
-        </ThemedText>
+      <ThemedView style={{
+        paddingHorizontal: 10,
+      }}>
+        <ThemedText style={{
+          color: 'red',
+          fontSize: 18,
+        }}>{error}</ThemedText>
+        <TextInput
+          style={{
+            borderRadius: 10,
+            paddingHorizontal: 10,
+            height: 40, borderColor:
+              'gray',
+            borderWidth: 1,
+            display: 'flex',
+            width: '100%',
+            fontSize: 18,
+          }}
+          placeholder="Enter your name"
+          onChangeText={text => setUserName(text)}
+          value={userName}
+        />
       </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
-        <ThemedText>
-          When you're ready, run{' '}
-          <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> to{' '}
-          <ThemedText type="defaultSemiBold">app-example</ThemedText>.
-        </ThemedText>
+      <ThemedView style={{
+        paddingHorizontal: 10,
+      }}>
+        <TouchableOpacity
+          style={{
+            backgroundColor: '#3B82F6',
+            padding: 10,
+            borderRadius: 10,
+          }}
+          onPress={handleQuestions}
+        >
+          <ThemedText style={{
+            fontSize: 18,
+            textAlign: 'center',
+            color: '#fff',
+          }}>Start</ThemedText>
+        </TouchableOpacity>
       </ThemedView>
     </ParallaxScrollView>
   );

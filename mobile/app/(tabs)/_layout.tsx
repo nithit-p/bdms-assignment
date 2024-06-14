@@ -33,12 +33,15 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="questions"
+        name="questions/index"
         options={{
-          title: 'Questions',
-          tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name={focused ? 'checkmark' : 'checkmark-outline'} color={color} />
-          ),
+          href: null,
+        }}
+      />
+      <Tabs.Screen
+        name="questions/summary"
+        options={{
+          href: null,
         }}
       />
       <Tabs.Screen
